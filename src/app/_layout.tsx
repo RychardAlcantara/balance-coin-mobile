@@ -20,6 +20,8 @@ function RootLayoutInner() {
         <>
           <Stack.Screen name="dashboard/index" />
           <Stack.Screen name="dashboard/transacoes" />
+          <Stack.Screen name="dashboard/lista" />
+          <Stack.Screen name="dashboard/[id]" />
         </>
       ) : (
         // 🚪 Usuário deslogado → home/login/register

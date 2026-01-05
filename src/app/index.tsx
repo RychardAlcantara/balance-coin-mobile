@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import { useAuth } from "../contexts/AuthContext";
+import getFirebaseErrorMessage from "../utils/firebaseErrors";
 
 export default function LoginScreen() {
   const { login } = useAuth();
@@ -21,14 +22,18 @@ export default function LoginScreen() {
   const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
-    if (!email || !senha) return alert("Preencha todos os campos.");
+    if (!email || !senha) {
+      alert("Preencha todos os campos.");
+      return;
+    }
 
     setLoading(true);
     try {
       await login(email, senha);
       router.replace("/dashboard");
     } catch (error: any) {
-      alert("Erro ao fazer login: " + error.message);
+      const message = getFirebaseErrorMessage(error.code);
+      alert(message);
     } finally {
       setLoading(false);
     }
