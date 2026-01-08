@@ -158,17 +158,62 @@ transacoes/{userId}/{timestamp}.jpg
 
 ## ▶️ Como Rodar o Projeto
 
-### 1️⃣ Instalar dependências
+### 1️⃣ Instalar as dependências
+
+No diretório do projeto, execute:
 
 ```bash
 npm install
 ```
 
+---
+
 ### 2️⃣ Iniciar o projeto
+
+Após a instalação, execute:
 
 ```bash
 npx expo start
 ```
+
+Isso abrirá o **Expo Dev Tools** no navegador e exibirá um **QR Code no terminal**.
+
+---
+
+### 📱 Rodando no celular (Android ou iOS)
+
+1. No celular, instale o aplicativo **Expo Go**:
+
+   * 📲 **Android:** Google Play
+   * 📲 **iOS:** App Store
+
+2. Abra o **Expo Go** no celular
+
+3. **Escaneie o QR Code** exibido no terminal ou no navegador após rodar o comando `npx expo start`
+
+4. Aguarde o carregamento e o aplicativo será aberto automaticamente no celular 🚀
+
+---
+
+### 💻 Rodando no emulador (opcional)
+
+Com o projeto em execução:
+
+* Pressione **`a`** para abrir no **Android Emulator**
+* Pressione **`i`** para abrir no **iOS Simulator** (macOS)
+
+---
+
+### ⚠️ Observações importantes
+
+* O celular e o computador devem estar **conectados à mesma rede Wi-Fi**
+* Caso haja problemas de conexão, tente iniciar com:
+
+  ```bash
+  npx expo start --tunnel
+  ```
+
+---
 
 ---
 
