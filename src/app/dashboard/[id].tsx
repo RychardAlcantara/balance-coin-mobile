@@ -4,7 +4,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { deleteDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useEffect, useState } from "react";
-import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import { db, storage } from "../../firebase/firebaseConfig";
 
 const PRIMARY_COLOR = "#2a5298";
@@ -17,7 +17,7 @@ export default function EditarTransacao() {
     ? params.id[0]
     : params.id;
 
- const [descricao, setDescricao] = useState("");
+  const [descricao, setDescricao] = useState("");
   const [valor, setValor] = useState("");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [novaImagem, setNovaImagem] = useState<string | null>(null);
@@ -49,7 +49,7 @@ export default function EditarTransacao() {
     carregar();
   }, [user, transacaoId]);
 
-    const escolherImagem = async () => {
+  const escolherImagem = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 0.7,
@@ -125,50 +125,58 @@ export default function EditarTransacao() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Text style={styles.backButton}>← Voltar</Text>
-        </TouchableOpacity>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
+      >
+        <View style={styles.container}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Text style={styles.backButton}>← Voltar</Text>
+          </TouchableOpacity>
+          <Text style={styles.title}>Editar Transação</Text>
 
-        <Text style={styles.title}>Editar Transação</Text>
-      </View>
+          <TextInput
+            style={styles.input}
+            value={descricao}
+            onChangeText={setDescricao}
+            placeholder="Descrição"
+          />
 
-      <TextInput
-        style={styles.input}
-        value={descricao}
-        onChangeText={setDescricao}
-        placeholder="Descrição"
-      />
+          <TextInput
+            style={styles.input}
+            value={valor}
+            keyboardType="numeric"
+            onChangeText={setValor}
+            placeholder="Valor"
+          />
+          {(novaImagem || imageUrl) && (
+            <Image
+              source={{ uri: novaImagem ?? imageUrl! }}
+              style={styles.image}
+            />
+          )}
 
-      <TextInput
-        style={styles.input}
-        value={valor}
-        keyboardType="numeric"
-        onChangeText={setValor}
-        placeholder="Valor"
-      />
-      {(novaImagem || imageUrl) && (
-        <Image
-          source={{ uri: novaImagem ?? imageUrl! }}
-          style={styles.image}
-        />
-      )}
+          <TouchableOpacity style={styles.imageBtn} onPress={escolherImagem}>
+            <Text style={styles.imageText}>
+              {imageUrl ? "Trocar comprovante" : "Adicionar comprovante"}
+            </Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.imageBtn} onPress={escolherImagem}>
-        <Text style={styles.imageText}>
-          {imageUrl ? "Trocar comprovante" : "Adicionar comprovante"}
-        </Text>
-      </TouchableOpacity>
+          <TouchableOpacity style={styles.save} onPress={salvar}>
+            <Text style={styles.text}>Salvar</Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity style={styles.save} onPress={salvar}>
-        <Text style={styles.text}>Salvar</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.delete} onPress={excluir}>
-        <Text style={styles.text}>Excluir</Text>
-      </TouchableOpacity>
-    </View>
+          <TouchableOpacity style={styles.delete} onPress={excluir}>
+            <Text style={styles.text}>Excluir</Text>
+          </TouchableOpacity>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -182,6 +190,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
+    textAlign: "center",
     fontSize: 26,
     fontWeight: "bold",
     color: PRIMARY_COLOR,
@@ -218,17 +227,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 20,
-  },
-
   backButton: {
     color: PRIMARY_COLOR,
     fontSize: 16,
     fontWeight: "600",
     marginRight: 12,
+    marginBottom: 20,
   },
 
   image: {
@@ -238,7 +242,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-   imageBtn: {
+  imageBtn: {
     backgroundColor: "#eee",
     padding: 14,
     borderRadius: 12,

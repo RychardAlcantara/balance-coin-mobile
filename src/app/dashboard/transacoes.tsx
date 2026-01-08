@@ -162,6 +162,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
+    textAlign: "center",
     fontSize: 26,
     fontWeight: "bold",
     color: PRIMARY_COLOR,
