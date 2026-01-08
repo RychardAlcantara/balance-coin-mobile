@@ -99,6 +99,9 @@ export default function ListaTransacoes() {
   const inicio = (pagina - 1) * ITENS_POR_PAGINA;
   const fim = inicio + ITENS_POR_PAGINA;
   const transacoesPaginadas = transacoesFiltradas.slice(inicio, fim);
+  const transacoesOrdenadas = [...transacoesPaginadas].sort(
+    (a, b) => b.createdAt.toDate().getTime() - a.createdAt.toDate().getTime()
+  );
 
   return (
     <KeyboardAvoidingView
@@ -231,7 +234,7 @@ export default function ListaTransacoes() {
           </TouchableOpacity>
 
           <FlatList
-            data={transacoesPaginadas}
+            data={transacoesOrdenadas}
             keyExtractor={(item) => item.id!}
             renderItem={({ item }) => (
               <TouchableOpacity
