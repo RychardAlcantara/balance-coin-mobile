@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Animated, StyleSheet, Text, View } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { Animated, StyleSheet, View } from "react-native";
 
 interface AnimatedBalanceProps {
   saldo: number;
@@ -32,8 +32,12 @@ export default function AnimatedBalance({ saldo }: AnimatedBalanceProps) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Saldo Atual:</Text>
-      <Animated.Text style={styles.balanceText}>
+      <Animated.Text
+        style={[
+          styles.balanceText,
+          { color: displayValue < 0 ? "#c62828" : "#2e7d32" },
+        ]}
+      >
         R$ {displayValue.toFixed(2)}
       </Animated.Text>
     </View>
@@ -45,13 +49,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 20,
   },
-  label: {
-    fontSize: 18,
-    color: "#555",
-  },
   balanceText: {
     fontSize: 32,
     fontWeight: "bold",
-    color: "#2e7d32",
   },
 });

@@ -112,7 +112,14 @@ export default function Dashboard() {
           { opacity: fadeAnim, transform: [{ translateY: slideAnim }] },
         ]}
       >
-        <Text style={styles.title}>Olá 👋</Text>
+        <View style={styles.headerTop}>
+          <Text style={styles.title}>Olá 👋</Text>
+
+          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+            <Text style={styles.buttonText}>Sair</Text>
+          </TouchableOpacity>
+        </View>
+
         <Text style={styles.subtitle}>Seu resumo financeiro</Text>
       </Animated.View>
 
@@ -146,7 +153,7 @@ export default function Dashboard() {
             labels: ["Entradas", "Saídas"],
             datasets: [{ data: [entradas, saidas] }],
           }}
-          width={screenWidth - 40}
+          width={screenWidth - 100}
           height={220}
           yAxisLabel="R$ "
           yAxisSuffix=""
@@ -156,7 +163,7 @@ export default function Dashboard() {
             decimalPlaces: 2,
             color: () => PRIMARY_COLOR,
             labelColor: () => "#666",
-            barPercentage: 0.6,
+            barPercentage: 0.7,
           }}
           style={{ borderRadius: 16 }}
         />
@@ -225,10 +232,6 @@ export default function Dashboard() {
         >
           <Text style={styles.buttonText}>+ Nova Transação</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-          <Text style={styles.buttonText}>Sair</Text>
-        </TouchableOpacity>
       </View>
 
       {/* Últimas Transações */}
@@ -271,12 +274,26 @@ export default function Dashboard() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 25,
+    paddingTop: 60,
     backgroundColor: "#f5f7fb",
   },
 
   header: {
     marginBottom: 20,
+  },
+
+  headerTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  logoutButton: {
+    backgroundColor: "#c62828",
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    borderRadius: 12,
   },
 
   title: {
@@ -288,6 +305,7 @@ const styles = StyleSheet.create({
   subtitle: {
     color: "#666",
     fontSize: 14,
+    marginTop: 4,
   },
 
   balanceCard: {
@@ -378,14 +396,6 @@ const styles = StyleSheet.create({
     padding: 14,
     borderRadius: 12,
     width: "65%",
-    alignItems: "center",
-  },
-
-  logoutButton: {
-    backgroundColor: "#9e9e9e",
-    padding: 14,
-    borderRadius: 12,
-    width: "30%",
     alignItems: "center",
   },
 
